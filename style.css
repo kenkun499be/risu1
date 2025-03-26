@@ -57,10 +57,10 @@ body, html {
 }
 
 button {
-    width: 80px; /* ボタンの幅 */
-    height: 80px; /* ボタンの高さ（幅と同じにすることで円形になる） */
+    width: 60px; /* ボタンの幅を60pxに変更 */
+    height: 60px; /* ボタンの高さも60pxに変更 */
     border-radius: 50%; /* 丸くする */
-    font-size: 14px;
+    font-size: 12px; /* フォントサイズを少し小さくする */
     cursor: pointer;
     display: flex;
     justify-content: center;
