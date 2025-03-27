@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const startBtn = document.getElementById('start-btn');
     const snackBtn = document.getElementById('snack-btn');
     const dateBtn = document.getElementById('date-btn');
-    const touchBtn = document.getElementById('touch-btn');
+    const shopBtn = document.getElementById('shop-btn');  // touchBtnをshopBtnに変更
     const eventBtn = document.getElementById('event-btn');
 
     startBtn.addEventListener('click', function() {
@@ -29,8 +29,8 @@ document.addEventListener('DOMContentLoaded', function () {
         alert('デートに行きました！');
     });
 
-    touchBtn.addEventListener('click', function() {
-        alert('ふれあいをしました！');
+    shopBtn.addEventListener('click', function() {
+        alert('ショップに行きました！');
     });
 
     eventBtn.addEventListener('click', function() {
