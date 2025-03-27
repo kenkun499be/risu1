@@ -62,7 +62,7 @@ button {
     width: 60px; /* ボタンの幅 */
     height: 60px; /* ボタンの高さ */
     border-radius: 50%; /* 丸くする */
-    font-size: 10px; /* 文字サイズを更に小さく */
+    font-size: 7px; /* 文字サイズを更に小さく */
     cursor: pointer;
     display: flex;
     justify-content: center;
