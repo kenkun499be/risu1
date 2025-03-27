@@ -9,8 +9,10 @@ body, html {
     align-items: center;
     background-color: #fff;
     overflow: hidden; /* ページ外にコンテンツがはみ出さないようにする */
+    position: relative; /* スクロールを防ぐために親要素に相対位置を設定 */
 }
 
+/* 画面全体の構造 */
 .screen {
     position: absolute;
     width: 100%;
@@ -21,10 +23,6 @@ body, html {
     flex-direction: column;
 }
 
-.hidden {
-    display: none;
-}
-
 /* 背景 */
 .background {
     position: absolute;
@@ -33,7 +31,6 @@ body, html {
     width: 100%;
     height: 100%;
     object-fit: cover; /* 画像が画面を覆うように調整 */
-    overflow: hidden; /* 背景がはみ出さないように */
 }
 
 /* スタートボタン */
