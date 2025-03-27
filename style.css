@@ -1,69 +1,16 @@
-/* 白いオーバーレイ */
-.fade-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
+/* 基本のスタイル */
+body, html {
+    margin: 0;
+    padding: 0;
     width: 100%;
     height: 100%;
-    background-color: white;
-    z-index: 9999; /* 他の要素より上に表示 */
-    opacity: 0; /* 最初は非表示 */
-    transition: opacity 1s ease; /* フェードアウトの効果 */
-}
-
-/* ゲーム画面 */
-#game-screen .character {
-    z-index: 1; /* キャラクターのレイヤー */
-    width: 250px;
-    position: relative;
-}
-
-/* ボタンのスタイル */
-button {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    font-size: 10px;
-    cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-weight: bold;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease;
-    border: 3px solid white;
+    background-color: #fff;
+    overflow: hidden;
 }
 
-button:hover {
-    transform: scale(1.1);
-}
-
-button:focus {
-    outline: none;
-}
-
-/* ボタンの色 */
-#snack-btn {
-    background-color: #FFCDD2;
-    color: #D32F2F;
-}
-
-#date-btn {
-    background-color: #B3E5FC;
-    color: #0288D1;
-}
-
-#shop-btn {
-    background-color: #FFEB3B;
-    color: #F57F17;
-}
-
-#event-btn {
-    background-color: #C8E6C9;
-    color: #388E3C;
-}
-
-/* 初期画面 */
 .screen {
     position: absolute;
     width: 100%;
@@ -78,6 +25,7 @@ button:focus {
     display: none;
 }
 
+/* 背景 */
 .background {
     position: absolute;
     top: 0;
@@ -87,7 +35,69 @@ button:focus {
     object-fit: cover;
 }
 
+/* スタートボタン */
 .start-btn {
     z-index: 1;
     cursor: pointer;
+}
+
+/* ゲーム画面 */
+#game-screen .character {
+    z-index: 1; /* キャラクターのレイヤーをボタンの下に変更 */
+    width: 500px; /* キャラクターの幅を大きくする */
+    position: relative;
+}
+
+/* ボタンのレイヤーを上に設定 */
+.button-container {
+    position: absolute;
+    bottom: 20px;
+    display: flex;
+    justify-content: space-around;
+    width: 80%;
+    z-index: 3; /* ボタンのレイヤーを上に設定 */
+}
+/* ボタンのスタイル */
+button {
+    width: 60px; /* ボタンの幅 */
+    height: 60px; /* ボタンの高さ */
+    border-radius: 50%; /* 丸くする */
+    font-size: 10px; /* 文字サイズを更に小さく */
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* ボタンに影を追加 */
+    transition: transform 0.2s ease; /* ホバー時のアニメーション */
+    border: 3px solid white; /* 枠線の色を白に変更 */
+}
+
+button:hover {
+    transform: scale(1.1); /* ボタンにホバー時のアニメーションを追加 */
+}
+
+button:focus {
+    outline: none; /* ボタンにフォーカス時のアウトラインを消す */
+}
+
+/* ボタンの色を個別に設定 */
+#snack-btn {
+    background-color: #FFCDD2; /* 薄い赤 */
+    color: #D32F2F; /* 赤文字 */
+}
+
+#date-btn {
+    background-color: #B3E5FC; /* 水色 */
+    color: #0288D1; /* 青文字 */
+}
+
+#shop-btn {
+    background-color: #FFEB3B; /* 黄色 */
+    color: #F57F17; /* 濃い黄色文字 */
+}
+
+#event-btn {
+    background-color: #C8E6C9; /* 黄緑 */
+    color: #388E3C; /* 緑文字 */
 }
