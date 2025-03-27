@@ -127,19 +127,19 @@ document.addEventListener('DOMContentLoaded', function () {
         // 吹き出しが表示されているときは非表示にする
         if (!speechBubble.classList.contains('hidden')) {
             // クールタイム中なら処理をしない
-        if (isCooldown) return;
+            if (isCooldown) return;
 
-        if (isTextFullyDisplayed) {
-            // 文字がすべて表示されたら、クリックでセリフを非表示
-            speechBubble.classList.add('hidden');
-        } else if (index < message.length) {
-            // 文字がまだ表示されていない場合、残りの文字をすべて表示
-            while (index < message.length) {
-                speechText.textContent += message.charAt(index);
-                index++;
+            if (isTextFullyDisplayed) {
+                // 文字がすべて表示されたら、クリックでセリフを非表示
+                speechBubble.classList.add('hidden');
+            } else if (index < message.length) {
+                // 文字がまだ表示されていない場合、残りの文字をすべて表示
+                while (index < message.length) {
+                    speechText.textContent += message.charAt(index);
+                    index++;
+                }
+                isTextFullyDisplayed = true; // 文字がすべて表示された状態に
             }
-            isTextFullyDisplayed = true; // 文字がすべて表示された状態に
-        }
             return; // それ以上の処理は行わない
         }
 
@@ -184,11 +184,10 @@ document.addEventListener('DOMContentLoaded', function () {
             character.classList.remove('bounce');
             // アニメーションが終了したのでタップ可能にする
             isAnimating = false;
-        }, 3000000000); // アニメーションの時間（3000ms）後にタップを再度有効化
+        }, 500); // アニメーションの時間（3000ms）後にタップを再度有効化
 
         if (!speechBubble.classList.contains('hidden')) {
             setTimeout(() => {
-                character.classList.remove('bounce');
                 // アニメーションが終了したのでタップ可能にする
                 isAnimating = false;
             }, 0); // アニメーションの時間（3000ms）後にタップを再度有効化
