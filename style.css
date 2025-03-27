@@ -8,7 +8,7 @@ body, html {
     justify-content: center;
     align-items: center;
     background-color: #fff;
-    overflow: hidden;
+    overflow: hidden; /* ページ外にコンテンツがはみ出さないようにする */
 }
 
 .screen {
@@ -32,7 +32,8 @@ body, html {
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: cover; /* 画像が画面を覆うように調整 */
+    overflow: hidden; /* 背景がはみ出さないように */
 }
 
 /* スタートボタン */
@@ -56,12 +57,14 @@ body, html {
     justify-content: space-around;
     width: 80%;
     z-index: 3; /* ボタンのレイヤーを上に設定 */
-}/* ボタンのスタイル */
+}
+
+/* ボタンのスタイル */
 button {
     width: 60px; /* ボタンの幅 */
     height: 60px; /* ボタンの高さ */
     border-radius: 50%; /* 丸くする */
-    font-size: 10px; /* 文字サイズを更に小さく */
+    font-size: 7px; /* 文字サイズを更に小さく */
     cursor: pointer;
     display: flex;
     justify-content: center;
