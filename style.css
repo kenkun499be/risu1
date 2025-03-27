@@ -119,3 +119,66 @@ button:focus {
     background-color: #C8E6C9; /* 黄緑 */
     color: #388E3C; /* 緑文字 */
 }
+
+/* キャラクターのアニメーション */
+@keyframes bounce {
+    0% {
+        transform: translateY(0); /* 初期位置 */
+    }
+    50% {
+        transform: translateY(-20px); /* 上に跳ねる */
+    }
+    100% {
+        transform: translateY(0); /* 元に戻る */
+    }
+}
+
+#character {
+    z-index: 1; /* キャラクターのレイヤーをボタンの下に変更 */
+    width: 500px; /* キャラクターの幅を大きくする */
+    position: relative;
+    transition: transform 0.3s ease; /* トランジションを追加してアニメーションをなめらかに */
+}
+
+.bounce {
+    animation: bounce 0.5s ease; /* 0.5秒でアニメーション */
+}
+
+/* 吹き出しのスタイル */
+.speech-bubble {
+    position: absolute;
+    bottom: 100px; /* 下部に表示するように変更 */
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 2;
+}
+
+.bubble-img {
+    width: 400px;
+    height: auto;
+}
+
+.speech-text {
+    position: absolute;
+    top: 40px; /* 吹き出しの中で文字を少し上に表示 */
+    color: #000;
+    font-size: 15px;
+    font-weight: bold;
+    text-align: left; /* 左揃えに変更 */
+    left: 40px; /* 吹き出し内の右端から10pxの位置に配置 */
+    top: 27px; /* 上部から40pxの位置に配置 */
+    margin: 0;
+    padding: 0;
+    white-space: nowrap; /* テキストが1行で表示されるように */
+    overflow: hidden; /* オーバーフローを隠す */
+    width: 100%; /* 幅を固定 */
+}
+
+/* 吹き出しが隠れているとき */
+.hidden {
+    display: none;
+}
