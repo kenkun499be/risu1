@@ -54,11 +54,28 @@ document.addEventListener('DOMContentLoaded', function () {
     const startScreenBackground = document.querySelector('#start-screen .background');
     const gameBackground = document.querySelector('#game-screen .background'); // ゲーム画面の背景
 
+    
+
     let isAnimating = false; // アニメーション中かどうかを管理するフラグ
-    let message = "こんにちは！"; // 表示するセリフ
     let index = 0; // 文字表示位置を管理
     let isTextFullyDisplayed = false; // 文字がすべて表示されたかどうか
     let isCooldown = false; // 0.1秒のクールタイムフラグ
+
+     // セリフの配列
+     const messages = [
+        "かまってちゃん？",
+        "なーに",
+        "かわいいね！！よちよちよちよちー！！",
+        "かまってかまってかまってーー",
+        "えへへ",
+        "えへへーー"
+    ];
+
+    // ランダムにセリフを選ぶ関数
+    function getRandomMessage() {
+        const randomIndex = Math.floor(Math.random() * messages.length);
+        return messages[randomIndex];
+    }
 
     // スタート画面の背景もクリックでゲームを開始できるようにする
     startScreenBackground.addEventListener('click', function() {
@@ -109,7 +126,20 @@ document.addEventListener('DOMContentLoaded', function () {
     character.addEventListener('click', function() {
         // 吹き出しが表示されているときは非表示にする
         if (!speechBubble.classList.contains('hidden')) {
-            speechBubble.classList.add('hidden'); // 吹き出しを非表示にする
+            // クールタイム中なら処理をしない
+        if (isCooldown) return;
+
+        if (isTextFullyDisplayed) {
+            // 文字がすべて表示されたら、クリックでセリフを非表示
+            speechBubble.classList.add('hidden');
+        } else if (index < message.length) {
+            // 文字がまだ表示されていない場合、残りの文字をすべて表示
+            while (index < message.length) {
+                speechText.textContent += message.charAt(index);
+                index++;
+            }
+            isTextFullyDisplayed = true; // 文字がすべて表示された状態に
+        }
             return; // それ以上の処理は行わない
         }
 
@@ -131,6 +161,10 @@ document.addEventListener('DOMContentLoaded', function () {
         index = 0; // 文字のインデックスをリセット
         isTextFullyDisplayed = false; // 文字が完全に表示されていない状態にリセット
 
+
+    // ランダムなメッセージを取得
+    const message = getRandomMessage();
+
         // 文字を1文字ずつ表示する関数
         function displayNextChar() {
             if (index < message.length) {
@@ -150,7 +184,15 @@ document.addEventListener('DOMContentLoaded', function () {
             character.classList.remove('bounce');
             // アニメーションが終了したのでタップ可能にする
             isAnimating = false;
-        }, 3000); // アニメーションの時間（3000ms）後にタップを再度有効化
+        }, 3000000000); // アニメーションの時間（3000ms）後にタップを再度有効化
+
+        if (!speechBubble.classList.contains('hidden')) {
+            setTimeout(() => {
+                character.classList.remove('bounce');
+                // アニメーションが終了したのでタップ可能にする
+                isAnimating = false;
+            }, 0); // アニメーションの時間（3000ms）後にタップを再度有効化
+        }
 
         // 0.1秒後にクールタイムを解除
         setTimeout(() => {
