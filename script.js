@@ -51,6 +51,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const character = document.getElementById('character');
     const speechBubble = document.getElementById('speech-bubble');
     const speechText = document.getElementById('speech-text');
+    const startScreenBackground = document.querySelector('#start-screen .background');
+    const gameBackground = document.querySelector('#game-screen .background'); // ゲーム画面の背景
 
     let isAnimating = false; // アニメーション中かどうかを管理するフラグ
     let message = "こんにちは！"; // 表示するセリフ
@@ -58,14 +60,31 @@ document.addEventListener('DOMContentLoaded', function () {
     let isTextFullyDisplayed = false; // 文字がすべて表示されたかどうか
     let isCooldown = false; // 0.1秒のクールタイムフラグ
 
+    // スタート画面の背景もクリックでゲームを開始できるようにする
+    startScreenBackground.addEventListener('click', function() {
+        startScreen.style.transition = 'opacity 1s';
+        startScreen.style.opacity = 0;
+
+        // フェードアウト後にゲーム画面を表示
+        setTimeout(() => {
+            startScreen.style.display = 'none';
+            gameScreen.classList.remove('hidden');
+            gameScreen.style.transition = 'opacity 1s';
+            gameScreen.style.opacity = 1;
+        }, 1000);
+    });
+
     // スタートボタンのクリックイベント
     startBtn.addEventListener('click', function() {
-        fadeOverlay.style.opacity = 1; // 白いオーバーレイを表示
+        startScreen.style.transition = 'opacity 1s';
+        startScreen.style.opacity = 0;
 
+        // フェードアウト後にゲーム画面を表示
         setTimeout(() => {
-            startScreen.style.display = 'none'; // スタート画面を非表示
-            gameScreen.classList.remove('hidden'); // ゲーム画面を表示
-            fadeOverlay.style.opacity = 0; // フェードアウトを戻す
+            startScreen.style.display = 'none';
+            gameScreen.classList.remove('hidden');
+            gameScreen.style.transition = 'opacity 1s';
+            gameScreen.style.opacity = 1;
         }, 1000);
     });
 
@@ -88,10 +107,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // キャラクターをタップしたときのイベント
     character.addEventListener('click', function() {
+        // 吹き出しが表示されているときは非表示にする
+        if (!speechBubble.classList.contains('hidden')) {
+            speechBubble.classList.add('hidden'); // 吹き出しを非表示にする
+            return; // それ以上の処理は行わない
+        }
+
         // アニメーション中は処理を行わない
         if (isAnimating) return;
-
-        
 
         // クールタイム開始
         isCooldown = true;
@@ -127,7 +150,7 @@ document.addEventListener('DOMContentLoaded', function () {
             character.classList.remove('bounce');
             // アニメーションが終了したのでタップ可能にする
             isAnimating = false;
-        }, 3000); // アニメーションの時間（500ms）後にタップを再度有効化
+        }, 3000); // アニメーションの時間（3000ms）後にタップを再度有効化
 
         // 0.1秒後にクールタイムを解除
         setTimeout(() => {
@@ -135,12 +158,29 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 100); // 100ms後にクールタイムを解除
     });
 
-    // 吹き出しが非表示になる条件
-    document.addEventListener('click', function() {
-
+    // 吹き出しがクリックされた時にセリフを非表示にする
+    speechBubble.addEventListener('click', function() {
         // クールタイム中なら処理をしない
         if (isCooldown) return;
-        
+
+        if (isTextFullyDisplayed) {
+            // 文字がすべて表示されたら、クリックでセリフを非表示
+            speechBubble.classList.add('hidden');
+        } else if (index < message.length) {
+            // 文字がまだ表示されていない場合、残りの文字をすべて表示
+            while (index < message.length) {
+                speechText.textContent += message.charAt(index);
+                index++;
+            }
+            isTextFullyDisplayed = true; // 文字がすべて表示された状態に
+        }
+    });
+
+    // 背景がクリックされた時にセリフを非表示にする
+    gameBackground.addEventListener('click', function() {
+        // クールタイム中なら処理をしない
+        if (isCooldown) return;
+
         if (isTextFullyDisplayed) {
             // 文字がすべて表示されたら、クリックでセリフを非表示
             speechBubble.classList.add('hidden');
