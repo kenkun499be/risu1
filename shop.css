@@ -13,26 +13,31 @@
     background-position: center; /* 画像が中央に表示されるように */
 }
 
+/* 背景 */
 .shop-background {
     position: relative;
     width: 90%; /* 背景の幅 */
     max-width: 900px;
-    height: 80%; /* 背景の高さ */
+    height: auto; /* 高さを自動調整 */
     background-color: #ffffff; /* 背景色を白に */
     border-radius: 10px; /* 角丸 */
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
+/* アイテムがスクロール可能に */
 .shop-items {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 画面サイズに応じてアイテムを自動的に折り返し */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* アイテムを自動的に並べる */
     gap: 20px;
     padding: 20px;
     justify-items: center;
     align-items: center;
+    height: 400px; /* アイテムのエリアに高さを設定 */
+    overflow-y: auto; /* アイテムが多い場合にスクロールを有効に */
 }
 
+/* 各アイテムのスタイル */
 .shop-item {
     width: 85%;
     height: 130px;
@@ -43,7 +48,6 @@
     cursor: pointer;
     transition: transform 0.3s ease;
 }
-
 
 .shop-item img {
     width: 100px; /* 画像サイズを調整 */
@@ -66,7 +70,7 @@
     transform: scale(0.9); /* クリック時に縮小 */
 }
 
-
+/* 所持金表示 */
 .money-display {
     position: absolute;
     top: 20px; /* 画面の上から少し下に配置 */
