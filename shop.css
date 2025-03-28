@@ -1,0 +1,62 @@
+/* ショップの画面 */
+#shop-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7); /* 半透明の黒背景 */
+}
+
+.shop-background {
+    position: relative;
+    width: 80%; /* 背景の幅 */
+    max-width: 900px;
+    height: 80%; /* 背景の高さ */
+    background-color: #fff; /* 背景色を白に */
+    border-radius: 10px; /* 角丸 */
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.shop-items {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3列に分けて配置 */
+    gap: 20px;
+    padding: 20px;
+    justify-items: center;
+    align-items: center;
+}
+
+.shop-item {
+    text-align: center;
+    padding: 10px;
+    background-color: #f3f3f3;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.shop-item img {
+    width: 100px; /* 画像サイズを調整 */
+    height: auto;
+    object-fit: contain;
+}
+
+.shop-item p {
+    margin-top: 10px;
+    font-size: 16px;
+    color: #333;
+}
+
+.shop-item:hover {
+    transform: scale(1.1); /* ホバー時に拡大 */
+}
+
+.shop-item:active {
+    transform: scale(0.9); /* クリック時に縮小 */
+}

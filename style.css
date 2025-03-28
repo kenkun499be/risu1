@@ -252,11 +252,6 @@ button:focus {
     color: #ffeb3b; /* ホバー時にアイテム名の色を変更 */
 }
 
-
-
-
-
-
 /* おやつUIを非表示にする */
 .hidden {
     display: none;
