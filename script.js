@@ -20,10 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 1000);
     });
 
-    // ボタンイベント例
-    snackBtn.addEventListener('click', function() {
-        alert('おやつをあげました！');
-    });
+
 
     dateBtn.addEventListener('click', function() {
         alert('デートに行きました！');
@@ -68,7 +65,8 @@ document.addEventListener('DOMContentLoaded', function () {
         "かわいいね！！よちよちよちよちー！！",
         "かまってかまってかまってーー",
         "えへへ",
-        "えへへーー"
+        "えへへーー",
+        "うへへ"
     ];
 
     // ランダムにセリフを選ぶ関数
@@ -79,6 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // スタート画面の背景もクリックでゲームを開始できるようにする
     startScreenBackground.addEventListener('click', function() {
+        snack = 0
         startScreen.style.transition = 'opacity 1s';
         startScreen.style.opacity = 0;
 
@@ -95,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
     startBtn.addEventListener('click', function() {
         startScreen.style.transition = 'opacity 1s';
         startScreen.style.opacity = 0;
+        snack = 0
 
         // フェードアウト後にゲーム画面を表示
         setTimeout(() => {
@@ -105,25 +105,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 1000);
     });
 
-    // 各ボタンのクリックイベント
-    snackBtn.addEventListener('click', function() {
-        alert('おやつをあげました！');
-    });
+    
 
-    dateBtn.addEventListener('click', function() {
-        alert('デートに行きました！');
-    });
-
-    shopBtn.addEventListener('click', function() {
-        alert('ショップに行きました！');
-    });
-
-    eventBtn.addEventListener('click', function() {
-        alert('イベントが発生しました！');
-    });
 
     // キャラクターをタップしたときのイベント
     character.addEventListener('click', function() {
+
         // 吹き出しが表示されているときは非表示にする
         if (!speechBubble.classList.contains('hidden')) {
             // クールタイム中なら処理をしない
@@ -143,7 +130,8 @@ document.addEventListener('DOMContentLoaded', function () {
             return; // それ以上の処理は行わない
         }
 
-        // アニメーション中は処理を行わない
+        if (snack == 0) {
+            // アニメーション中は処理を行わない
         if (isAnimating) return;
 
         // クールタイム開始
@@ -162,8 +150,8 @@ document.addEventListener('DOMContentLoaded', function () {
         isTextFullyDisplayed = false; // 文字が完全に表示されていない状態にリセット
 
 
-    // ランダムなメッセージを取得
-    const message = getRandomMessage();
+        // ランダムなメッセージを取得
+        const message = getRandomMessage();
 
         // 文字を1文字ずつ表示する関数
         function displayNextChar() {
@@ -196,7 +184,8 @@ document.addEventListener('DOMContentLoaded', function () {
         // 0.1秒後にクールタイムを解除
         setTimeout(() => {
             isCooldown = false;
-        }, 100); // 100ms後にクールタイムを解除
+        }, 100); // 100ms後にクールタイムを解除   
+        }
     });
 
     // 吹き出しがクリックされた時にセリフを非表示にする
@@ -233,5 +222,66 @@ document.addEventListener('DOMContentLoaded', function () {
             }
             isTextFullyDisplayed = true; // 文字がすべて表示された状態に
         }
+    });
+});
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const snackBtn = document.getElementById('snack-btn');
+    const snackUI = document.getElementById('snack-ui');
+    const snackList = document.querySelector('.snack-list');
+
+    // おやつのデータ（名前、画像など）
+    const snacks = [
+        { name: 'りんご', image: 'textures/apple.png' },
+        { name: 'にんじん', image: 'images/carrot.png' },
+        { name: 'チーズ', image: 'images/cheese.png' }
+    ];
+
+    // おやつボタンを押した時におやつUIを表示
+    snackBtn.addEventListener('click', function() {
+        snackUI.classList.remove('hidden'); // おやつUIを表示
+        snackList.innerHTML = ''; // リストをクリア
+
+        // おやつのリストを表示
+        snacks.forEach(snack => {
+            const snackItem = document.createElement('div');
+            snackItem.classList.add('snack-item');
+
+            // 画像を表示
+            const snackImage = document.createElement('img');
+            snackImage.src = snack.image;
+            snackItem.appendChild(snackImage);
+
+            // アイテム名を表示
+            const snackName = document.createElement('p');
+            snackName.textContent = snack.name;
+            snackItem.appendChild(snackName);
+
+            // おやつをクリックしたときの処理
+            snackItem.addEventListener('click', function() {
+                snackUI.classList.add('hidden'); // UIを非表示
+            });
+
+            snackList.appendChild(snackItem);
+        });
+    });
+
+    // UIを閉じる処理（キャラクタータップ、背景タップ、閉じるボタン）
+    const closeSnackUI = document.getElementById('close-snack-ui');
+    const character = document.getElementById('character');
+    const gameBackground = document.querySelector('#game-screen .background');
+
+    character.addEventListener('click', function() {
+        snackUI.classList.add('hidden');
+    });
+
+    gameBackground.addEventListener('click', function() {
+        snackUI.classList.add('hidden');
+    });
+
+    closeSnackUI.addEventListener('click', function() {
+        snackUI.classList.add('hidden');
     });
 });

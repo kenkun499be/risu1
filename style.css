@@ -194,3 +194,81 @@ button:focus {
     background-color: rgba(255, 255, 255, 0.5); /* 半透明の白 */
     z-index: 2; /* ボタンより下に配置 */
 }
+
+
+
+
+/* おやつUI */
+.snack-ui {
+    position: absolute;
+    bottom: 0%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    padding: 20px;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #fff;
+}
+
+.snack-list {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 0px;
+    width: 500px;
+}
+
+.snack-item {
+    background-color: transparent; /* 背景色を透明に */
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    width: 100px; /* アイテムの幅を固定 */
+}
+
+.snack-item img {
+    width: 80px; /* アイテム画像のサイズ */
+    height: 80px; /* アイテム画像のサイズ */
+    object-fit: cover; /* 画像がボタン内に収まるように調整 */
+}
+
+.snack-item p {
+    margin-top: 5px;
+    font-weight: bold;
+    color: #fff;
+    font-size: 14px; /* アイテム名のフォントサイズ */
+}
+
+.snack-item:hover img {
+    transform: scale(1.1); /* 画像にホバー効果を追加 */
+}
+
+.snack-item:hover p {
+    color: #ffeb3b; /* ホバー時にアイテム名の色を変更 */
+}
+
+
+#close-snack-ui {
+    position: absolute;
+    top: 10px; /* 上から10px */
+    right: 30px; /* 右から10px */
+    background-color: #D32F2F;
+    color: white;
+    border-radius: 100%;
+    width: 20px; /* 幅を指定 */
+    height: 20px; /* 高さを指定 */
+    cursor: pointer;
+}
+
+#close-snack-ui:hover {
+    background-color: #C2185B;
+}
+
+/* おやつUIを非表示にする */
+.hidden {
+    display: none;
+}
