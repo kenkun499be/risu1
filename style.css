@@ -203,6 +203,7 @@ button:focus {
     position: absolute;
     bottom: 0%;
     left: 50%;
+    width: 100%;
     transform: translateX(-50%);
     background-color: rgba(0, 0, 0, 0.7);
     padding: 20px;
@@ -217,7 +218,7 @@ button:focus {
     display: flex;
     flex-direction: row;
     margin-bottom: 0px;
-    width: 500px;
+    width: 100%;
 }
 
 .snack-item {
