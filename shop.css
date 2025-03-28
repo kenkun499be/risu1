@@ -8,15 +8,17 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0, 0, 0, 0.7); /* 半透明の黒背景 */
+    background-image: url('textures/back2.png'); /* 背景画像を指定 */
+    background-size: cover; /* 画像が画面を覆うように調整 */
+    background-position: center; /* 画像が中央に表示されるように */
 }
 
 .shop-background {
     position: relative;
-    width: 80%; /* 背景の幅 */
+    width: 90%; /* 背景の幅 */
     max-width: 900px;
     height: 80%; /* 背景の高さ */
-    background-color: #fff; /* 背景色を白に */
+    background-color: #ffffff; /* 背景色を白に */
     border-radius: 10px; /* 角丸 */
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -24,7 +26,7 @@
 
 .shop-items {
     display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3列に分けて配置 */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 画面サイズに応じてアイテムを自動的に折り返し */
     gap: 20px;
     padding: 20px;
     justify-items: center;
@@ -32,23 +34,26 @@
 }
 
 .shop-item {
+    width: 85%;
+    height: 130px;
     text-align: center;
     padding: 10px;
-    background-color: #f3f3f3;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #ffeeee;
+    border-radius: 12px;
     cursor: pointer;
     transition: transform 0.3s ease;
 }
 
+
 .shop-item img {
     width: 100px; /* 画像サイズを調整 */
     height: auto;
+    border-radius: 10px; /* 角丸 */
     object-fit: contain;
 }
 
 .shop-item p {
-    margin-top: 10px;
+    margin-top: 0px;
     font-size: 16px;
     color: #333;
 }
@@ -59,4 +64,39 @@
 
 .shop-item:active {
     transform: scale(0.9); /* クリック時に縮小 */
+}
+
+
+.money-display {
+    position: absolute;
+    top: 20px; /* 画面の上から少し下に配置 */
+    right: 20px; /* 画面の右から少し内側に配置 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10; /* 他の要素より上に表示されるように */
+}
+
+.money-box {
+    background-color: rgba(0, 0, 0, 0.7); /* 半透明の黒背景 */
+    color: #fff;
+    padding: 10px 15px; /* 内側の余白 */
+    height: 12px;
+    border-radius: 20px; /* 角を丸くする */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #fff; /* 白い枠線 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* ボックスに影を追加 */
+}
+
+.money-icon {
+    width: 20px;  /* アイコンの大きさ */
+    height: auto;
+    margin-right: 8px; /* アイコンとテキストの間隔 */
+}
+
+#money-amount {
+    font-weight: bold;
+    font-size: 18px; /* フォントサイズを少し大きく */
 }
