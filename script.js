@@ -190,9 +190,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // おやつのデータ（名前、画像など）
     const snacks = [
-        { name: 'りんご', image: 'textures/apple.png' },
-        { name: 'にんじん', image: 'images/carrot.png' },
-        { name: 'チーズ', image: 'images/cheese.png' }
+        { name: 'いちご', image: 'textures/items/strawberry.png' },
+        { name: 'マカロン', image: 'textures/items/macaron.png' },
+        { name: 'ドーナツ', image: 'textures/items/donut.png' }
     ];
 
     // おやつボタンを押した時におやつUIを表示

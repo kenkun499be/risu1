@@ -47,6 +47,10 @@
     border-radius: 12px;
     cursor: pointer;
     transition: transform 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .shop-item img {
@@ -57,9 +61,25 @@
 }
 
 .shop-item p {
-    margin-top: 0px;
+    margin: 0; /* アイテム名の余白をなくす */
     font-size: 16px;
     color: #333;
+}
+
+.shop-item .coin-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #333;
+    margin-top: -5px; /* アイテム名と値段の間隔を小さくする */
+}
+
+.shop-item .coin-display img {
+    width: 15px; /* アイコンサイズ調整 */
+    height: auto;
+    margin-right: 0px; /* アイコンと金額の間隔 */
+    margin-top: -2px;
 }
 
 .shop-item:hover {
@@ -103,4 +123,30 @@
 #money-amount {
     font-weight: bold;
     font-size: 18px; /* フォントサイズを少し大きく */
+}
+
+/* ホームボタン */
+.home-button {
+    position: fixed; /* 画面内で固定 */
+    top: 20px; /* 上から20px */
+    left: 20px; /* 左から20px */
+    background-color: #ffffff;
+    color: #333;
+    font-size: 18px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    text-decoration: none;
+    border: 2px solid #333;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    z-index: 1000; /* 他の要素より前に表示されるように */
+    transition: all 0.3s ease;
+}
+
+.home-button:hover {
+    background-color: #f0f0f0;
+    transform: scale(1.1); /* ホバー時に拡大 */
+}
+
+.home-button:active {
+    transform: scale(0.9); /* クリック時に縮小 */
 }
