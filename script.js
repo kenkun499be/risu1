@@ -20,8 +20,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 1000);
     });
 
-
-
     dateBtn.addEventListener('click', function() {
         alert('デートに行きました！');
     });
@@ -34,7 +32,6 @@ document.addEventListener('DOMContentLoaded', function () {
         alert('イベントが発生しました！');
     });
 });
-
 
 document.addEventListener('DOMContentLoaded', function () {
     const startScreen = document.getElementById('start-screen');
@@ -50,16 +47,16 @@ document.addEventListener('DOMContentLoaded', function () {
     const speechText = document.getElementById('speech-text');
     const startScreenBackground = document.querySelector('#start-screen .background');
     const gameBackground = document.querySelector('#game-screen .background'); // ゲーム画面の背景
-
-    
+    const snackUI = document.getElementById('snack-ui');
+    const snackList = document.querySelector('.snack-list');
 
     let isAnimating = false; // アニメーション中かどうかを管理するフラグ
     let index = 0; // 文字表示位置を管理
     let isTextFullyDisplayed = false; // 文字がすべて表示されたかどうか
     let isCooldown = false; // 0.1秒のクールタイムフラグ
 
-     // セリフの配列
-     const messages = [
+    // セリフの配列
+    const messages = [
         "かまってちゃん？",
         "なーに",
         "かわいいね！！よちよちよちよちー！！",
@@ -77,7 +74,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // スタート画面の背景もクリックでゲームを開始できるようにする
     startScreenBackground.addEventListener('click', function() {
-        snack = 0
+        message2 = 0;
+        snack = 0;
         startScreen.style.transition = 'opacity 1s';
         startScreen.style.opacity = 0;
 
@@ -94,7 +92,8 @@ document.addEventListener('DOMContentLoaded', function () {
     startBtn.addEventListener('click', function() {
         startScreen.style.transition = 'opacity 1s';
         startScreen.style.opacity = 0;
-        snack = 0
+        snack = 0;
+        message2 = 0;
 
         // フェードアウト後にゲーム画面を表示
         setTimeout(() => {
@@ -105,12 +104,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 1000);
     });
 
-    
-
-
     // キャラクターをタップしたときのイベント
     character.addEventListener('click', function() {
-
         // 吹き出しが表示されているときは非表示にする
         if (!speechBubble.classList.contains('hidden')) {
             // クールタイム中なら処理をしない
@@ -119,6 +114,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (isTextFullyDisplayed) {
                 // 文字がすべて表示されたら、クリックでセリフを非表示
                 speechBubble.classList.add('hidden');
+                message2 = 0
             } else if (index < message.length) {
                 // 文字がまだ表示されていない場合、残りの文字をすべて表示
                 while (index < message.length) {
@@ -131,60 +127,60 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
         if (snack == 0) {
+            message2 = 1;
             // アニメーション中は処理を行わない
-        if (isAnimating) return;
+            if (isAnimating) return;
 
-        // クールタイム開始
-        isCooldown = true;
+            // クールタイム開始
+            isCooldown = true;
 
-        // アニメーションが開始されたことを記録
-        isAnimating = true;
+            // アニメーションが開始されたことを記録
+            isAnimating = true;
 
-        // "bounce" クラスを追加してアニメーション開始
-        character.classList.add('bounce');
+            // "bounce" クラスを追加してアニメーション開始
+            character.classList.add('bounce');
 
-        // 吹き出しを表示
-        speechBubble.classList.remove('hidden');
-        speechText.textContent = ""; // 既存のテキストをクリア
-        index = 0; // 文字のインデックスをリセット
-        isTextFullyDisplayed = false; // 文字が完全に表示されていない状態にリセット
+            // 吹き出しを表示
+            speechBubble.classList.remove('hidden');
+            speechText.textContent = ""; // 既存のテキストをクリア
+            index = 0; // 文字のインデックスをリセット
+            isTextFullyDisplayed = false; // 文字が完全に表示されていない状態にリセット
 
+            // ランダムなメッセージを取得
+            const message = getRandomMessage();
 
-        // ランダムなメッセージを取得
-        const message = getRandomMessage();
-
-        // 文字を1文字ずつ表示する関数
-        function displayNextChar() {
-            if (index < message.length) {
-                speechText.textContent += message.charAt(index);
-                index++;
-                setTimeout(displayNextChar, 100); // 100msごとに1文字表示
-            } else {
-                isTextFullyDisplayed = true; // 文字がすべて表示された状態に
+            // 文字を1文字ずつ表示する関数
+            function displayNextChar() {
+                if (index < message.length) {
+                    speechText.textContent += message.charAt(index);
+                    index++;
+                    setTimeout(displayNextChar, 100); // 100msごとに1文字表示
+                } else {
+                    isTextFullyDisplayed = true; // 文字がすべて表示された状態に
+                }
             }
-        }
 
-        // セリフを徐々に表示
-        displayNextChar();
+            // セリフを徐々に表示
+            displayNextChar();
 
-        // アニメーションが終了した後にクラスを削除し、再度タップできるようにする
-        setTimeout(() => {
-            character.classList.remove('bounce');
-            // アニメーションが終了したのでタップ可能にする
-            isAnimating = false;
-        }, 500); // アニメーションの時間（3000ms）後にタップを再度有効化
-
-        if (!speechBubble.classList.contains('hidden')) {
+            // アニメーションが終了した後にクラスを削除し、再度タップできるようにする
             setTimeout(() => {
+                character.classList.remove('bounce');
                 // アニメーションが終了したのでタップ可能にする
                 isAnimating = false;
-            }, 0); // アニメーションの時間（3000ms）後にタップを再度有効化
-        }
+            }, 500); // アニメーションの時間（3000ms）後にタップを再度有効化
 
-        // 0.1秒後にクールタイムを解除
-        setTimeout(() => {
-            isCooldown = false;
-        }, 100); // 100ms後にクールタイムを解除   
+            if (!speechBubble.classList.contains('hidden')) {
+                setTimeout(() => {
+                    // アニメーションが終了したのでタップ可能にする
+                    isAnimating = false;
+                }, 0); // アニメーションの時間（3000ms）後にタップを再度有効化
+            }
+
+            // 0.1秒後にクールタイムを解除
+            setTimeout(() => {
+                isCooldown = false;
+            }, 100); // 100ms後にクールタイムを解除   
         }
     });
 
@@ -196,6 +192,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (isTextFullyDisplayed) {
             // 文字がすべて表示されたら、クリックでセリフを非表示
             speechBubble.classList.add('hidden');
+            message2 = 0
         } else if (index < message.length) {
             // 文字がまだ表示されていない場合、残りの文字をすべて表示
             while (index < message.length) {
@@ -213,6 +210,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (isTextFullyDisplayed) {
             // 文字がすべて表示されたら、クリックでセリフを非表示
+            message2 = 0
             speechBubble.classList.add('hidden');
         } else if (index < message.length) {
             // 文字がまだ表示されていない場合、残りの文字をすべて表示
@@ -223,14 +221,6 @@ document.addEventListener('DOMContentLoaded', function () {
             isTextFullyDisplayed = true; // 文字がすべて表示された状態に
         }
     });
-});
-
-
-
-document.addEventListener('DOMContentLoaded', function () {
-    const snackBtn = document.getElementById('snack-btn');
-    const snackUI = document.getElementById('snack-ui');
-    const snackList = document.querySelector('.snack-list');
 
     // おやつのデータ（名前、画像など）
     const snacks = [
@@ -241,47 +231,43 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // おやつボタンを押した時におやつUIを表示
     snackBtn.addEventListener('click', function() {
-        snackUI.classList.remove('hidden'); // おやつUIを表示
-        snackList.innerHTML = ''; // リストをクリア
+        if (message2 == 0) {
+            snackUI.classList.remove('hidden'); // おやつUIを表示
+            snackList.innerHTML = ''; // リストをクリア
+            snack = 1;
 
-        // おやつのリストを表示
-        snacks.forEach(snack => {
-            const snackItem = document.createElement('div');
-            snackItem.classList.add('snack-item');
+            // おやつのリストを表示
+            snacks.forEach(snack => {
+                const snackItem = document.createElement('div');
+                snackItem.classList.add('snack-item');
+            
+                // 画像を表示
+                const snackImage = document.createElement('img');
+                snackImage.src = snack.image;
+                snackItem.appendChild(snackImage);
 
-            // 画像を表示
-            const snackImage = document.createElement('img');
-            snackImage.src = snack.image;
-            snackItem.appendChild(snackImage);
+                // アイテム名を表示
+                const snackName = document.createElement('p');
+                snackName.textContent = snack.name;
+                snackItem.appendChild(snackName);
 
-            // アイテム名を表示
-            const snackName = document.createElement('p');
-            snackName.textContent = snack.name;
-            snackItem.appendChild(snackName);
-
-            // おやつをクリックしたときの処理
-            snackItem.addEventListener('click', function() {
-                snackUI.classList.add('hidden'); // UIを非表示
+                // おやつをクリックしたときの処理
+                snackItem.addEventListener('click', function() {
+                    snackUI.classList.add('hidden'); // UIを非表示
+                });
+                snackList.appendChild(snackItem);
             });
-
-            snackList.appendChild(snackItem);
-        });
+        }
     });
 
     // UIを閉じる処理（キャラクタータップ、背景タップ、閉じるボタン）
-    const closeSnackUI = document.getElementById('close-snack-ui');
-    const character = document.getElementById('character');
-    const gameBackground = document.querySelector('#game-screen .background');
-
     character.addEventListener('click', function() {
         snackUI.classList.add('hidden');
+        snack = 0;
     });
 
     gameBackground.addEventListener('click', function() {
         snackUI.classList.add('hidden');
-    });
-
-    closeSnackUI.addEventListener('click', function() {
-        snackUI.classList.add('hidden');
+        snack = 0;
     });
 });

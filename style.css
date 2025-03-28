@@ -238,7 +238,7 @@ button:focus {
 }
 
 .snack-item p {
-    margin-top: 5px;
+    margin-bottom: 0px;
     font-weight: bold;
     color: #fff;
     font-size: 14px; /* アイテム名のフォントサイズ */
@@ -253,21 +253,9 @@ button:focus {
 }
 
 
-#close-snack-ui {
-    position: absolute;
-    top: 10px; /* 上から10px */
-    right: 30px; /* 右から10px */
-    background-color: #D32F2F;
-    color: white;
-    border-radius: 100%;
-    width: 20px; /* 幅を指定 */
-    height: 20px; /* 高さを指定 */
-    cursor: pointer;
-}
 
-#close-snack-ui:hover {
-    background-color: #C2185B;
-}
+
+
 
 /* おやつUIを非表示にする */
 .hidden {
