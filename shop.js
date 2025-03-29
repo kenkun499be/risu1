@@ -23,16 +23,11 @@ function updateMoney(amount) {
 // 購入したアイテムを記録する関数
 function updatePurchasedItems(itemName) {
     // アイテムがすでに購入されているかを確認
-    const existingItem = purchasedItems.find(item => item.name === itemName);
-
-    if (existingItem) {
-        // 既に購入済みであれば個数を増やす
-        existingItem.count += 1;
+    if (purchasedItems.includes(itemName)) {
+        return; // 既に購入していれば何もしない
     } else {
-        // 新規アイテムを購入履歴に追加
-        purchasedItems.push({ name: itemName, count: 1 });
+        purchasedItems.push(itemName); // 新規アイテムを購入履歴に追加
     }
-
     // 購入したアイテムをlocalStorageに保存
     localStorage.setItem('purchasedItems', JSON.stringify(purchasedItems));
 
@@ -49,11 +44,7 @@ function updateSnackList() {
         { name: 'ドーナツ', image: 'textures/items/donut.png' }
     ];
     
-    // 所持しているおやつを取得
-    const ownedSnacks = snacks.map(snack => {
-        const purchasedItem = purchasedItems.find(item => item.name === snack.name);
-        return purchasedItem ? { ...snack, count: purchasedItem.count } : null;
-    }).filter(snack => snack); // nullは除外
+    const ownedSnacks = snacks.filter(snack => purchasedItems.includes(snack.name));
 
     // スナックリストを更新する処理を実装
     const snackList = document.getElementById('snack-list'); // ここでsnack-listの要素を取得します
@@ -68,9 +59,9 @@ function updateSnackList() {
         snackImage.src = snack.image;
         snackItem.appendChild(snackImage);
     
-        // アイテム名と個数を表示
+        // アイテム名を表示
         const snackName = document.createElement('p');
-        snackName.textContent = `${snack.name} - ${snack.count}個`; // 個数も表示
+        snackName.textContent = snack.name;
         snackItem.appendChild(snackName);
     
         // おやつをクリックしたときの処理
