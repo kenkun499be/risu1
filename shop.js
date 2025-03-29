@@ -107,6 +107,6 @@ document.getElementById('home-button').addEventListener('click', function() {
 
 // ページがアンロードされるときに所持金や購入アイテムを保存する
 window.addEventListener('beforeunload', function() {
-    localStorage.setItem('money', money);
+    localStorage.setItem('money', 5000);
     localStorage.setItem('purchasedItems', JSON.stringify(purchasedItems));
 });
