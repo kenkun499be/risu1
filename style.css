@@ -195,9 +195,6 @@ button:focus {
     z-index: 2; /* ボタンより下に配置 */
 }
 
-
-
-
 /* おやつUI */
 .snack-ui {
     position: absolute;
@@ -256,4 +253,3 @@ button:focus {
 .hidden {
     display: none;
 }
-

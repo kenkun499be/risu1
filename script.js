@@ -19,6 +19,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let index = 0; // 文字表示位置を管理
     let isTextFullyDisplayed = false; // 文字がすべて表示されたかどうか
     let isCooldown = false; // 0.1秒のクールタイムフラグ
+    let snack = 0; // スナックUIが表示されているかのフラグ
+    let message2 = 0; // セリフ表示フラグ
 
     // セリフの配列
     const messages = [
@@ -188,12 +190,18 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // おやつのデータ（名前、画像など）
+    // 購入したアイテムの取得
+    const purchasedItems = JSON.parse(localStorage.getItem('purchasedItems')) || [];
+
+    // おやつのデータ（名前、画像、個数）
     const snacks = [
-        { name: 'いちご', image: 'textures/items/strawberry.png' },
-        { name: 'マカロン', image: 'textures/items/macaron.png' },
-        { name: 'ドーナツ', image: 'textures/items/donut.png' }
+        { name: 'いちご', image: 'textures/items/strawberry.png', count: 5 },
+        { name: 'マカロン', image: 'textures/items/macaron.png', count: 3 },
+        { name: 'ドーナツ', image: 'textures/items/donut.png', count: 2 }
     ];
+
+    // ユーザーが持っているおやつ（購入したアイテムのみ）
+    const ownedSnacks = snacks.filter(snack => purchasedItems.includes(snack.name));
 
     // おやつボタンを押した時におやつUIを表示
     snackBtn.addEventListener('click', function() {
@@ -202,8 +210,8 @@ document.addEventListener('DOMContentLoaded', function () {
             snackList.innerHTML = ''; // リストをクリア
             snack = 1;
 
-            // おやつのリストを表示
-            snacks.forEach(snack => {
+            // ユーザーが持っているおやつをリストに追加
+            ownedSnacks.forEach(snack => {
                 const snackItem = document.createElement('div');
                 snackItem.classList.add('snack-item');
             
@@ -212,9 +220,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 snackImage.src = snack.image;
                 snackItem.appendChild(snackImage);
 
-                // アイテム名を表示
+                // アイテム名と個数を表示
                 const snackName = document.createElement('p');
-                snackName.textContent = snack.name;
+                snackName.textContent = `${snack.name} - ${snack.count}個`; // 個数も表示
                 snackItem.appendChild(snackName);
 
                 // おやつをクリックしたときの処理

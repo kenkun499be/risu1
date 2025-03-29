@@ -130,20 +130,21 @@
     position: fixed; /* 画面内で固定 */
     top: 20px; /* 上から20px */
     left: 20px; /* 左から20px */
-    background-color: #ffffff;
-    color: #333;
-    font-size: 18px;
-    padding: 10px 15px;
-    border-radius: 8px;
-    text-decoration: none;
-    border: 2px solid #333;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.7); /* 半透明の黒背景 */
+    color: #fff;
+    padding: 10px 15px; /* 内側の余白 */
+    height: 12px;
+    border-radius: 20px; /* 角を丸くする */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #fff; /* 白い枠線 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* ボックスに影を追加 */
     z-index: 1000; /* 他の要素より前に表示されるように */
     transition: all 0.3s ease;
 }
 
 .home-button:hover {
-    background-color: #f0f0f0;
     transform: scale(1.1); /* ホバー時に拡大 */
 }
 
