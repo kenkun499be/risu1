@@ -1,7 +1,7 @@
 // localStorage から所持金を取得（ない場合は 0 とする）
 let money = Number(localStorage.getItem('money'));
 if (isNaN(money)) {
-    money = 0; // 所持金が NaN の場合は 0 とする
+    money = 5000; // 所持金が NaN の場合は 0 とする
 }
 
 // 所持金表示の要素を取得
@@ -98,6 +98,6 @@ document.getElementById('home-button').addEventListener('click', function() {
 
 // ページがアンロードされるときに所持金や購入アイテムを保存する
 window.addEventListener('beforeunload', function() {
-    localStorage.setItem('money', 5000);
+    localStorage.setItem('money', money);
     localStorage.setItem('purchasedItems', JSON.stringify(purchasedItems));
 });
