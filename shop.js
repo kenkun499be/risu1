@@ -1,7 +1,7 @@
 // localStorage から所持金を取得（ない場合は 0 とする）
 let money = Number(localStorage.getItem('money'));
 if (isNaN(money)) {
-    money = 5000; // 所持金が NaN の場合は 0 とする
+    money = 0; // 所持金が NaN の場合は 0 とする
 }
 
 // 所持金表示の要素を取得
@@ -10,8 +10,8 @@ const moneyAmount = document.getElementById('money-amount');
 // 初期表示の更新
 moneyAmount.textContent = money;
 
-// アイテム購入履歴の取得（ない場合は空の配列）
-let purchasedItems = JSON.parse(localStorage.getItem('purchasedItems')) || [];
+// アイテム購入履歴の取得（ない場合は空のオブジェクト）
+let purchasedItems = JSON.parse(localStorage.getItem('purchasedItems')) || {};
 
 // 所持金を更新する関数
 function updateMoney(amount) {
@@ -23,11 +23,12 @@ function updateMoney(amount) {
 // 購入したアイテムを記録する関数
 function updatePurchasedItems(itemName) {
     // アイテムがすでに購入されているかを確認
-    if (purchasedItems.includes(itemName)) {
-        return; // 既に購入していれば何もしない
+    if (purchasedItems[itemName]) {
+        purchasedItems[itemName] += 1; // すでに購入していれば個数を1増やす
     } else {
-        purchasedItems.push(itemName); // 新規アイテムを購入履歴に追加
+        purchasedItems[itemName] = 1; // 新規アイテムを購入履歴に追加（個数は1）
     }
+
     // 購入したアイテムをlocalStorageに保存
     localStorage.setItem('purchasedItems', JSON.stringify(purchasedItems));
 
@@ -43,8 +44,9 @@ function updateSnackList() {
         { name: 'マカロン', image: 'textures/items/macaron.png' },
         { name: 'ドーナツ', image: 'textures/items/donut.png' }
     ];
-    
-    const ownedSnacks = snacks.filter(snack => purchasedItems.includes(snack.name));
+
+    // 購入済みアイテムに基づくおやつリストの作成
+    const ownedSnacks = snacks.filter(snack => purchasedItems[snack.name] > 0);
 
     // スナックリストを更新する処理を実装
     const snackList = document.getElementById('snack-list'); // ここでsnack-listの要素を取得します
@@ -53,17 +55,17 @@ function updateSnackList() {
     ownedSnacks.forEach(snack => {
         const snackItem = document.createElement('div');
         snackItem.classList.add('snack-item');
-    
+
         // 画像を表示
         const snackImage = document.createElement('img');
         snackImage.src = snack.image;
         snackItem.appendChild(snackImage);
-    
+
         // アイテム名を表示
         const snackName = document.createElement('p');
-        snackName.textContent = snack.name;
+        snackName.textContent = `${snack.name} (${purchasedItems[snack.name]}個)`; // 所持数も表示
         snackItem.appendChild(snackName);
-    
+
         // おやつをクリックしたときの処理
         snackItem.addEventListener('click', function() {
             // おやつをクリックしたときの処理
@@ -78,7 +80,7 @@ function updateSnackList() {
 document.querySelectorAll('.shop-item').forEach(item => {
     item.addEventListener('click', function() {
         const itemPrice = 100; // アイテムの価格（仮に100コイン）
-        const itemName = item.querySelector('p').textContent; // アイテム名を取得
+        const itemName = item.getAttribute('data-name'); // アイテム名をdata-name属性から取得
 
         // 所持金が足りていれば購入
         if (money >= itemPrice) {

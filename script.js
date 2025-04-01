@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const speechBubble = document.getElementById('speech-bubble');
     const speechText = document.getElementById('speech-text');
     const startScreenBackground = document.querySelector('#start-screen .background');
-    const gameBackground = document.querySelector('#game-screen .background'); // ゲーム画面の背景
+    const gameBackground = document.querySelector('#game-screen .background');
     const snackUI = document.getElementById('snack-ui');
     const snackList = document.querySelector('.snack-list');
 
@@ -190,49 +190,57 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // 購入したアイテムの取得
-    const purchasedItems = JSON.parse(localStorage.getItem('purchasedItems')) || [];
+// 購入したアイテムの取得
+const purchasedItems = JSON.parse(localStorage.getItem('purchasedItems')) || [];
 
-    // おやつのデータ（名前、画像、個数）
-    const snacks = [
-        { name: 'いちご', image: 'textures/items/strawberry.png', count: 5 },
-        { name: 'マカロン', image: 'textures/items/macaron.png', count: 3 },
-        { name: 'ドーナツ', image: 'textures/items/donut.png', count: 2 }
-    ];
+// おやつのデータ（名前、画像、個数）
+const snacks = [
+    { name: 'いちご', image: 'textures/items/strawberry.png', count: 0 },
+    { name: 'マカロン', image: 'textures/items/macaron.png', count: 0 },
+    { name: 'ドーナツ', image: 'textures/items/donut.png', count: 0 }
+];
 
-    // ユーザーが持っているおやつ（購入したアイテムのみ）
-    const ownedSnacks = snacks.filter(snack => purchasedItems.includes(snack.name));
+// 購入したアイテムの個数を反映させる処理
+snacks.forEach(snack => {
+    // 購入履歴の中で該当するアイテムの個数をカウント
+    const itemCount = purchasedItems.filter(item => item === snack.name).length;
+    snack.count = itemCount; // 該当する個数を設定
+});
 
-    // おやつボタンを押した時におやつUIを表示
-    snackBtn.addEventListener('click', function() {
-        if (message2 == 0) {
-            snackUI.classList.remove('hidden'); // おやつUIを表示
-            snackList.innerHTML = ''; // リストをクリア
-            snack = 1;
+// ユーザーが持っているおやつ（購入したアイテムのみ）
+const ownedSnacks = snacks.filter(snack => snack.count > 0);
 
-            // ユーザーが持っているおやつをリストに追加
-            ownedSnacks.forEach(snack => {
-                const snackItem = document.createElement('div');
-                snackItem.classList.add('snack-item');
-            
-                // 画像を表示
-                const snackImage = document.createElement('img');
-                snackImage.src = snack.image;
-                snackItem.appendChild(snackImage);
+// おやつボタンを押した時におやつUIを表示
+snackBtn.addEventListener('click', function() {
+    if (message2 == 0) {
+        snackUI.classList.remove('hidden'); // おやつUIを表示
+        snackList.innerHTML = ''; // リストをクリア
+        snack = 1;
 
-                // アイテム名と個数を表示
-                const snackName = document.createElement('p');
-                snackName.textContent = `${snack.name} - ${snack.count}個`; // 個数も表示
-                snackItem.appendChild(snackName);
+        // ユーザーが持っているおやつをリストに追加
+        ownedSnacks.forEach(snack => {
+            const snackItem = document.createElement('div');
+            snackItem.classList.add('snack-item');
+        
+            // 画像を表示
+            const snackImage = document.createElement('img');
+            snackImage.src = snack.image;
+            snackItem.appendChild(snackImage);
 
-                // おやつをクリックしたときの処理
-                snackItem.addEventListener('click', function() {
-                    snackUI.classList.add('hidden'); // UIを非表示
-                });
-                snackList.appendChild(snackItem);
+            // アイテム名と個数を表示
+            const snackName = document.createElement('p');
+            snackName.textContent = `${snack.name} - ${snack.count}個`; // 個数も表示
+            snackItem.appendChild(snackName);
+
+            // おやつをクリックしたときの処理
+            snackItem.addEventListener('click', function() {
+                snackUI.classList.add('hidden'); // UIを非表示
             });
-        }
-    });
+            snackList.appendChild(snackItem);
+        });
+    }
+});
+
 
     // UIを閉じる処理（キャラクタータップ、背景タップ、閉じるボタン）
     character.addEventListener('click', function() {
