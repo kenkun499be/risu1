@@ -156,9 +156,6 @@ button:focus {
     align-items: center;
     flex-direction: column;
     z-index: 2;
-    max-width: 80%; /* 吹き出しの最大幅を設定 */
-    word-wrap: break-word;  /* 文字がはみ出したときに自動的に改行 */
-    white-space: pre-wrap; /* 改行を適切に扱う */
 }
 
 .bubble-img {
@@ -255,4 +252,24 @@ button:focus {
 /* おやつUIを非表示にする */
 .hidden {
     display: none;
+}
+
+/* レベル表示円 */
+.level-circle {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+    bottom: 200px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #ff6870;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    z-index: 3; 
+    border: 3px solid white;
 }

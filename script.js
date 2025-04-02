@@ -14,16 +14,22 @@ document.addEventListener('DOMContentLoaded', function () {
     const gameBackground = document.querySelector('#game-screen .background');
     const snackUI = document.getElementById('snack-ui');
     const snackList = document.querySelector('.snack-list');
-    const noItemsMessage = document.createElement('p');  // "アイテムがありません"のメッセージ要素
+    const noItemsMessage = document.createElement('p');
+    const levelText = document.getElementById('level-text'); // レベル表示用のテキスト
 
-    let isAnimating = false; // アニメーション中かどうかを管理するフラグ
-    let index = 0; // 文字表示位置を管理
-    let isTextFullyDisplayed = false; // 文字がすべて表示されたかどうか
-    let isCooldown = false; // 0.1秒のクールタイムフラグ
-    let snack = 0; // スナックUIが表示されているかのフラグ
-    let message2 = 0; // セリフ表示フラグ
+    let isAnimating = false;
+    let index = 0;
+    let isTextFullyDisplayed = false;
+    let isCooldown = false;
+    let snack = 0;
+    let message2 = 0;
 
-    // セリフの配列
+    // XPとレベルの初期値をローカルストレージから読み込む
+    let xp = localStorage.getItem('xp') ? parseInt(localStorage.getItem('xp')) : 0;  // 現在のXP
+    let level = localStorage.getItem('level') ? parseInt(localStorage.getItem('level')) : 1; // 現在のレベル
+
+    levelText.textContent = `${level}`; // 初期レベル表示
+
     const messages = [
         "かまってちゃん？",
         "なーに",
@@ -35,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function () {
         "ん？"
     ];
 
-    // ランダムにセリフを選ぶ関数
     function getRandomMessage() {
         const randomIndex = Math.floor(Math.random() * messages.length);
         return messages[randomIndex];
@@ -48,7 +53,6 @@ document.addEventListener('DOMContentLoaded', function () {
         startScreen.style.transition = 'opacity 1s';
         startScreen.style.opacity = 0;
 
-        // フェードアウト後にゲーム画面を表示
         setTimeout(() => {
             startScreen.style.display = 'none';
             gameScreen.classList.remove('hidden');
@@ -57,14 +61,12 @@ document.addEventListener('DOMContentLoaded', function () {
         }, 1000);
     });
 
-    // スタートボタンのクリックイベント
     startBtn.addEventListener('click', function() {
         startScreen.style.transition = 'opacity 1s';
         startScreen.style.opacity = 0;
         snack = 0;
         message2 = 0;
 
-        // フェードアウト後にゲーム画面を表示
         setTimeout(() => {
             startScreen.style.display = 'none';
             gameScreen.classList.remove('hidden');
@@ -75,114 +77,111 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // キャラクターをタップしたときのイベント
     character.addEventListener('click', function() {
-        // 吹き出しが表示されているときは非表示にする
         if (!speechBubble.classList.contains('hidden')) {
-            // クールタイム中なら処理をしない
             if (isCooldown) return;
 
             if (isTextFullyDisplayed) {
-                // 文字がすべて表示されたら、クリックでセリフを非表示
                 speechBubble.classList.add('hidden');
                 message2 = 0;
             } else if (index < message.length) {
-                // 文字がまだ表示されていない場合、残りの文字をすべて表示
                 while (index < message.length) {
                     speechText.textContent += message.charAt(index);
                     index++;
                 }
-                isTextFullyDisplayed = true; // 文字がすべて表示された状態に
+                isTextFullyDisplayed = true;
             }
-            return; // それ以上の処理は行わない
+            return;
         }
 
-        if (snack == 0 && message2 === 0) {  // セリフがまだ表示されていない状態での処理
+        if (snack == 0 && message2 === 0) {
+            // XPが増える
+            xp++;  
+            updateLevel(); // レベルアップをチェック
+            saveGameData(); // ローカルストレージに保存
             message2 = 1;
-            // アニメーション中は処理を行わない
             if (isAnimating) return;
 
-            // クールタイム開始
             isCooldown = true;
-
-            // アニメーションが開始されたことを記録
             isAnimating = true;
 
-            // "bounce" クラスを追加してアニメーション開始
             character.classList.add('bounce');
-
-            // 吹き出しを表示
             speechBubble.classList.remove('hidden');
-            speechText.textContent = ""; // 既存のテキストをクリア
-            index = 0; // 文字のインデックスをリセット
-            isTextFullyDisplayed = false; // 文字が完全に表示されていない状態にリセット
+            speechText.textContent = "";
+            index = 0;
+            isTextFullyDisplayed = false;
 
-            // ランダムなメッセージを取得
             const message = getRandomMessage();
 
-            // 文字を1文字ずつ表示する関数
             function displayNextChar() {
                 if (index < message.length) {
                     speechText.textContent += message.charAt(index);
                     index++;
-                    setTimeout(displayNextChar, 100); // 100msごとに1文字表示
+                    setTimeout(displayNextChar, 100);
                 } else {
-                    isTextFullyDisplayed = true; // 文字がすべて表示された状態に
-                    // セリフ表示後、次のアクションを有効にする
-                    message2 = 0; // セリフが終了したのでフラグをリセット
+                    isTextFullyDisplayed = true;
+                    message2 = 0;
                 }
             }
 
-            // セリフを徐々に表示
             displayNextChar();
 
-            // アニメーションが終了した後にクラスを削除し、再度タップできるようにする
             setTimeout(() => {
                 character.classList.remove('bounce');
-                // アニメーションが終了したのでタップ可能にする
                 isAnimating = false;
-            }, 500); // アニメーションの時間（500ms）後にタップを再度有効化
+            }, 500);
 
-            // 0.1秒後にクールタイムを解除
             setTimeout(() => {
                 isCooldown = false;
-            }, 100); // 100ms後にクールタイムを解除   
+            }, 100);
         }
     });
 
+    // レベルアップの処理
+    function updateLevel() {
+        const xpForNextLevel = level * level;  // 次のレベルに必要なXP（レベル^2）
+
+        if (xp >= xpForNextLevel) {
+            level++;
+            xp = 0; // レベルアップしたらXPをリセット
+            levelText.textContent = `${level}`;  // レベル表示を更新
+        }
+    }
+
+    // ローカルストレージにゲームデータを保存する関数
+    function saveGameData() {
+        localStorage.setItem('xp', xp);  // XPを保存
+        localStorage.setItem('level', level);  // レベルを保存
+    }
+
     // 吹き出しがクリックされた時にセリフを非表示にする
     speechBubble.addEventListener('click', function() {
-        // クールタイム中なら処理をしない
         if (isCooldown) return;
 
         if (isTextFullyDisplayed) {
-            // 文字がすべて表示されたら、クリックでセリフを非表示
             speechBubble.classList.add('hidden');
-            message2 = 0; // セリフが終了したのでフラグをリセット
+            message2 = 0;
         } else if (index < message.length) {
-            // 文字がまだ表示されていない場合、残りの文字をすべて表示
             while (index < message.length) {
                 speechText.textContent += message.charAt(index);
                 index++;
             }
-            isTextFullyDisplayed = true; // 文字がすべて表示された状態に
+            isTextFullyDisplayed = true;
         }
     });
 
     // 背景がクリックされた時にセリフを非表示にする
     gameBackground.addEventListener('click', function() {
-        // クールタイム中なら処理をしない
         if (isCooldown) return;
 
         if (isTextFullyDisplayed) {
-            // 文字がすべて表示されたら、クリックでセリフを非表示
-            message2 = 0; // セリフが終了したのでフラグをリセット
+            message2 = 0;
             speechBubble.classList.add('hidden');
         } else if (index < message.length) {
-            // 文字がまだ表示されていない場合、残りの文字をすべて表示
             while (index < message.length) {
                 speechText.textContent += message.charAt(index);
                 index++;
             }
-            isTextFullyDisplayed = true; // 文字がすべて表示された状態に
+            isTextFullyDisplayed = true;
         }
     });
 
@@ -260,10 +259,10 @@ document.addEventListener('DOMContentLoaded', function () {
                             index = 0; // インデックスをリセット
                             isTextFullyDisplayed = false; // 文字が完全に表示されていない状態にリセット
                             
-                            // セリフを1文字ずつ表示
+
                             function displayNextChar() {
                                 if (index < 2) {
-                                    speechText.textContent
+                                    speechText.textContent += snack.name.charAt(index);
                                     index++;
                                     setTimeout(displayNextChar, 100); // 100msごとに1文字表示
                                 } else {
@@ -290,9 +289,5 @@ document.addEventListener('DOMContentLoaded', function () {
     gameBackground.addEventListener('click', function() {
         snackUI.classList.add('hidden');
         snack = 0;
-    });
-
-    shopBtn.addEventListener('click', function() {
-        window.location.href = 'shop.html';  // shop.htmlページに遷移
     });
 });
